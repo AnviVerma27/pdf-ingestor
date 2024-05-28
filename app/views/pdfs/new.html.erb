@@ -1,0 +1,18 @@
+<h1 style="color: #333; font-family: Arial, sans-serif; text-align: center;">Upload PDF</h1>
+
+<div style="max-width: 400px; margin: 0 auto; background-color: #f8f9fa; padding: 30px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+    <%= form_with model: @pdf, local: true, url: pdfs_path, multipart: true do |form| %>
+        <div style="margin-bottom: 20px;">
+            <%= form.label :file, "Select PDF file:", style: "display: block; font-weight: bold; margin-bottom: 5px;" %>
+            <%= form.file_field :file, style: "width: 100%;" %>
+        </div>
+
+        <div style="text-align: center;">
+            <%= form.submit "Upload", style: "background-color: #007bff; color: #fff; padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer;" %>
+        </div>
+    <% end %>
+
+    <p style="text-align: center; margin-top: 20px;">
+        <%= link_to 'Back to PDFs', pdfs_path, style: "color: #007bff; text-decoration: none;" %>
+    </p>
+</div>

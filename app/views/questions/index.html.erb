@@ -1,0 +1,20 @@
+<h1>Questions</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Content</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @questions.each do |question| %>
+            <tr>
+                <td><%= question.id %></td>
+                <td><%= question.content %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<%= link_to 'Upload New PDF', new_question_path %>

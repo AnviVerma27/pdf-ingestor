@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ingestor</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+  </head>
+
+  <body>
+    <nav style="background-color: #333; padding: 20px; display: flex; justify-content: center;">
+      <% if user_signed_in? %>
+        <%= link_to 'Home', root_path, style: "color: #fff; text-decoration: none; margin: 0 10px; padding: 5px 10px; border-radius: 3px;" %>
+        <%= link_to 'Upload PDF', new_pdf_path, style: "color: #fff; text-decoration: none; margin: 0 10px; padding: 5px 10px; border-radius: 3px;" %>
+        <%= link_to 'Logout', destroy_user_session_path, method: :delete, style: "color: #fff; text-decoration: none; margin: 0 10px; padding: 5px 10px; border-radius: 3px;" %>
+      <% else %>
+        <%= link_to 'Sign Up', new_user_registration_path, style: "color: #fff; text-decoration: none; margin: 0 10px; padding: 5px 10px; border-radius: 3px;" %>
+        <%= link_to 'Login', new_user_session_path, style: "color: #fff; text-decoration: none; margin: 0 10px; padding: 5px 10px; border-radius: 3px;" %>
+      <% end %>
+    </nav>
+    
+    <%= yield %>
+    
+  </body>
+</html>
