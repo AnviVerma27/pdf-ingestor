@@ -1,4 +1,6 @@
 require 'pdf-reader'
+# require 'pycall'
+require 'open3'
 
 class PdfIngestor
     def initialize(file_path)
@@ -8,21 +10,25 @@ class PdfIngestor
     def extract_questions
         reader = PDF::Reader.new(@file_path)
         questions = []
-        
         reader.pages.each do |page|
-            page.text.each_line do |line|
-                if is_question?(line)
-                questions << line.strip
-                end
+            page.text do |line|
+                script_path = Rails.root.join('services', 'main.py')
+                result = `python3 #{script_path} '#{line}'`
+                questions<<result
+
+                # if is_question?(line)
+                # questions << line.strip
+                # end
             end
         end
-        
+        puts questions
         questions
     end
 
     private
 
-    def is_question?(line)
-        line.strip.end_with?('?')
-    end
+    # def resp()
+    #     result = `python main.py params`
+    #     return result
+    # end
 end
