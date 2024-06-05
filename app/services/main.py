@@ -1,9 +1,12 @@
 import openai
 import requests
+import sys
 import os
 from typing import List
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+text = sys.argv[1]
 
 def get_questions(text: str):
     response = openai.ChatCompletion.create(
@@ -21,5 +24,5 @@ def get_questions(text: str):
     questions = result.split('\n')
     return [q for q in questions if q.strip()]
 
-get_questions(text)
+print(get_questions(text))
 
