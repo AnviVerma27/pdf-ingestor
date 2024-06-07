@@ -16,14 +16,14 @@ class PdfsController < ApplicationController
       File.open(@file_path, 'wb') do |file|
         file.write(uploaded_file.read)
       end
-
+  
       pdf = current_user.pdfs.create(file_name: uploaded_file.original_filename)
-
+  
       if pdf.persisted?
         questions = ingestor
         storer = QuestionStorer.new(questions, pdf)
         storer.store
-
+  
         flash[:notice] = "Successfully ingested #{questions.size} questions."
         redirect_to pdf_path(pdf)
       else
@@ -51,21 +51,22 @@ class PdfsController < ApplicationController
 
   def ingestor
     reader = PDF::Reader.new(@file_path)
-    questions = []
+    text_content = []
+  
     reader.pages.each do |page|
-      page.text do |line|
-        input = line
-        result = `python3 app/services/main.py "#{input}"`
-        questions<<result
-
-                # if is_question?(line)
-                # questions << line.strip
-                # end
-        puts questions
-        return questions
-      end
+      text_content << page.text
     end
-    
+  
+    # Combine all text content from the PDF
+    combined_text = text_content.join("\n")
+  
+    # Call the Python script to extract questions
+    result = `python3 app/services/main.py "#{combined_text}"`
+    Rails.logger.debug "Python script result: #{result}"
+  
+    # Split the result into individual questions
+    questions = result.split("\n").map(&:strip).reject(&:empty?)
+  
+    questions
   end
-
 end

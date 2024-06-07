@@ -1,18 +1,17 @@
-import openai
-import requests
 import sys
+import openai
 import os
-from typing import List
+from dotenv import load_dotenv
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+load_dotenv()
 
-text = sys.argv[1]
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 def get_questions(text: str):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Extract questions from the following text."},
+            {"role": "system", "content": "Extract all the questions and things that are asked without answers from the following text."},
             {"role": "user", "content": text}
         ],
         max_tokens=1000,
@@ -24,5 +23,8 @@ def get_questions(text: str):
     questions = result.split('\n')
     return [q for q in questions if q.strip()]
 
-print(get_questions(text))
-
+if __name__ == "__main__":
+    text = sys.argv[1]
+    questions = get_questions(text)
+    for question in questions:
+        print(question)
